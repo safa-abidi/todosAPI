@@ -1,5 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { Todo } from './model/todo.model';
+import { v4 as uuidv4 } from 'uuid';
+import { Request } from 'express';
 
 @Controller('todo')
 export class TodoController {
@@ -9,7 +11,17 @@ export class TodoController {
   todos: Todo[] = [];
 
   @Get()
-  getTodos(): Todo[] {
+  getTodos(@Req() request: Request): Todo[] {
+    console.log(request);
     return this.todos;
+  }
+
+  @Post()
+  addTodo(@Body() newTodo: Todo): Todo {
+    let todo = new Todo();
+    todo.id = uuidv4();
+    todo = { ...todo, ...newTodo };
+    this.todos.push(todo);
+    return todo;
   }
 }
