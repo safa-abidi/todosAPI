@@ -5,7 +5,6 @@ export class PremierController {
   @Get()
   getPremier(): string {
     return 'Get';
-    console.log('get');
   }
 
   @Post()
