@@ -6,7 +6,7 @@ import { Request } from 'express';
 @Controller('todo')
 export class TodoController {
   constructor() {
-    this.todos = [new Todo(1, 'sport', 'faire du sport')];
+    this.todos = [new Todo('1', 'sport', 'faire du sport')];
   }
   todos: Todo[] = [];
 
