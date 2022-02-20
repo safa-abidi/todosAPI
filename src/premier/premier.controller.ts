@@ -1,9 +1,18 @@
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 
 @Controller('premier')
 export class PremierController {
-  @Get('/:name/:firstname')
+  @Get('/:name/:firstname/:op?') //op is optional
+  @HttpCode(499)
   getPremierWithParams(@Param('name') params): string {
     console.log(params);
     console.log('Get');
