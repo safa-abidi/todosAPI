@@ -6,13 +6,12 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Req,
 } from '@nestjs/common';
 import { Todo } from './model/todo.model';
 import { v4 as uuidv4 } from 'uuid';
 import { Request } from 'express';
-import { TodoStatusEnum } from './enums/todo-status.enum';
-
 @Controller('todo')
 export class TodoController {
   constructor() {
@@ -36,7 +35,7 @@ export class TodoController {
   }
 
   @Get('/:id')
-  getTodo(@Param('id') id): Todo {
+  getTodoById(@Param('id') id): Todo {
     console.log(id);
     const todo = this.todos.find((actualTodo) => actualTodo.id === id);
     if (todo) return todo;
@@ -46,8 +45,23 @@ export class TodoController {
   @Delete('/:id')
   deleteTodo(@Param('id') id): string {
     console.log(id);
-    const todo = this.todos.find((actualTodo) => actualTodo.id === id);
-    todo.status = TodoStatusEnum.waiting;
-    return 'deleted';
+    //find the todo by its id
+    const index = this.todos.findIndex((todo) => todo.id === id);
+    if (index) {
+      this.todos.splice(index, 1);
+      return 'todo deleted';
+    } else throw new NotFoundException(`le todo d'id ${id} n'existe pas`);
+  }
+
+  @Put('/:id')
+  updateTodo(@Param('id') id, @Body() newTodo): any {
+    console.log(id, newTodo);
+    const todo = this.getTodoById(id);
+    todo.description = newTodo.description
+      ? newTodo.description
+      : todo.description;
+
+    todo.name = newTodo.name ? newTodo.name : todo.name;
+    return todo;
   }
 }
