@@ -3,11 +3,9 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
-  Req,
 } from '@nestjs/common';
 import { Todo } from './model/todo.model';
 import { AddTodoDto } from './dto/add-todo.dto';
@@ -16,9 +14,7 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 import { TodoService } from './todo-service/todo-service.service';
 @Controller('todo')
 export class TodoController {
-  constructor(public todoService: TodoService) {
-    //this.todos = [new Todo('1', 'sport', 'faire du sport')];
-  }
+  constructor(public todoService: TodoService) {}
 
   //endpoints
   //get all todos
