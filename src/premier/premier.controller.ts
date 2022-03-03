@@ -1,13 +1,18 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
   HttpCode,
+  NotFoundException,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
+import { isInstance } from 'class-validator';
 import { Observable } from 'rxjs';
+import { UserDto } from './dto/user.dto';
+import { UserUpdateDto } from './dto/user_update.dto';
 
 @Controller('premier')
 export class PremierController {
@@ -60,5 +65,26 @@ export class PremierController {
   @Delete()
   deletePremier(): string {
     return 'Delete 🌊';
+  }
+  @Get('/:name/:firstname')
+  getPremierWithParam(@Param('name') params): string {
+    console.log(params);
+    console.log('GET 🐢');
+    throw new NotFoundException('');
+    return 'GET 🐢';
+  }
+
+  @Post('test')
+  testValidateur(@Body() user: UserDto): UserDto {
+    console.log(user);
+    console.log(isInstance(user, UserDto));
+    return user;
+  }
+
+  @Post('testUpdate')
+  testVlidateurUpdate(@Body() user: UserUpdateDto): UserUpdateDto {
+    console.log(user);
+    console.log(isInstance(user, UserDto));
+    return user;
   }
 }
