@@ -3,7 +3,9 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -31,7 +33,15 @@ export class TodoController {
 
   //get one todo by id
   @Get('/:id')
-  getTodoById(@Param('id') id): Todo {
+  getTodoById(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        errorHttpStatusCode: HttpStatus.NOT_FOUND,
+      }),
+    )
+    id,
+  ): Todo {
     return this.todoService.getTodoById(id);
   }
 
