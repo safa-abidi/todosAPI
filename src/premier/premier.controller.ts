@@ -8,12 +8,15 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { isInstance } from 'class-validator';
 import { Observable } from 'rxjs';
+import { DurationInterceptor } from 'src/interceptors/duration.interceptor';
 import { UserDto } from './dto/user.dto';
 import { UserUpdateDto } from './dto/user_update.dto';
 
+@UseInterceptors(DurationInterceptor)
 @Controller('premier')
 export class PremierController {
   @Get('/:name/:firstname/:op?') //op is optional

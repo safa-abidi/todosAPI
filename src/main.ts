@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { AppModule } from './app.module';
 
 import * as morgan from 'morgan';
+import { DurationInterceptor } from './interceptors/duration.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,8 @@ async function bootstrap() {
     console.log('middleware from app.use');
     next();
   });
+  //global interceptor //new bcz out of DI context
+  //app.useGlobalInterceptors(new DurationInterceptor());
   await app.listen(3000);
   app.useGlobalPipes(
     new ValidationPipe({
