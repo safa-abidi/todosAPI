@@ -11,6 +11,8 @@ import { PremierMiddleware } from './middleware/premier.middleware';
 import { PremierModule } from './premier/premier.module';
 import { TodoModule } from './todo/todo.module';
 
+import { HelmetMiddleware } from '@nest-middlewares/helmet';
+
 @Module({
   imports: [PremierModule, TodoModule],
   controllers: [AppController],
@@ -18,10 +20,22 @@ import { TodoModule } from './todo/todo.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(PremierMiddleware, logger).forRoutes({
-      path: 'premier',
-      method: RequestMethod.GET,
-    });
-    throw new Error('Method not implemented.');
+    consumer
+      .apply(PremierMiddleware)
+      .forRoutes(
+        'todo*',
+        {
+          path: 'premier',
+          method: RequestMethod.GET,
+        },
+        {
+          path: 'randomPath*', // * means anything than comes after /randomPath/
+          method: RequestMethod.DELETE,
+        },
+      )
+      .apply(logger)
+      .forRoutes('')
+      .apply(HelmetMiddleware)
+      .forRoutes('');
   }
 }
