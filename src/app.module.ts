@@ -12,9 +12,21 @@ import { PremierModule } from './premier/premier.module';
 import { TodoModule } from './todo/todo.module';
 
 import { HelmetMiddleware } from '@nest-middlewares/helmet';
+import { PublicationModule } from './publication/publication.module';
+import { PubDbModule } from './pub-db/pub-db.module';
+
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [PremierModule, TodoModule],
+  imports: [
+    PremierModule,
+    TodoModule,
+    PublicationModule,
+    PubDbModule,
+    MongooseModule.forRoot(
+      'mongodb+srv://safa:rEkalFEz1ozcz9at@cluster0.rhacs.mongodb.net/pub?retryWrites=true&w=majority',
+    ),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

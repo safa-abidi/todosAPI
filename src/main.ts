@@ -5,13 +5,19 @@ import { AppModule } from './app.module';
 
 import * as morgan from 'morgan';
 import { DurationInterceptor } from './interceptors/duration.interceptor';
+import { CustomFilter } from './custom-filtre.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const corsOptions = {
+  //cors for angular app
+  /*const corsOptions = {
     origin: ['http://localhost:4200'],
-  };
-  app.enableCors(corsOptions);
+  };*/
+  app.enableCors({
+    origin: true,
+  });
+
+  app.useGlobalFilters(new CustomFilter());
   app.use(morgan('dev'));
   //a middleware directly in main //le plus prioritaire puis la liste des middleware dans app.module
   app.use((req: Request, res: Response, next) => {
@@ -19,7 +25,7 @@ async function bootstrap() {
     next();
   });
   //global interceptor //new bcz out of DI context
-  //app.useGlobalInterceptors(new DurationInterceptor());
+  app.useGlobalInterceptors(new DurationInterceptor());
   await app.listen(3000);
   app.useGlobalPipes(
     new ValidationPipe({

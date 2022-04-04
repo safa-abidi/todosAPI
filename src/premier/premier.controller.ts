@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,12 +10,14 @@ import {
   Post,
   Put,
   UseInterceptors,
+  UsePipes,
 } from '@nestjs/common';
 import { isInstance } from 'class-validator';
 import { Observable } from 'rxjs';
 import { DurationInterceptor } from 'src/interceptors/duration.interceptor';
 import { UserDto } from './dto/user.dto';
 import { UserUpdateDto } from './dto/user_update.dto';
+import { PremierPipe } from './pipe/premier.pipe';
 
 @UseInterceptors(DurationInterceptor)
 @Controller('premier')
@@ -89,5 +92,11 @@ export class PremierController {
     console.log(user);
     console.log(isInstance(user, UserDto));
     return user;
+  }
+
+  @Post('/skills')
+  @UsePipes(new PremierPipe())
+  formatArray(@Body() skills: string[]) {
+    return skills;
   }
 }
